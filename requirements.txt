@@ -4,3 +4,5 @@ seaborn
 matplotlib
 sklearn
 minisom
+sklearn.preprocessing
+streamlit
