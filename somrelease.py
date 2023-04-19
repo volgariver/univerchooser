@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import sklearn
+import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 import streamlit as st
@@ -42,6 +42,7 @@ ans['name'] = un.name
 
 
 st.title('Альтернативные университеты')
+st.markdown('_Пример реализации самоорганизующихся карт Кохонена для кластеризации вузов РФ.  Полученные кластеы могут быть использованы для нового способа ранжирования образовательных организаций и построения обоснованной рекомендательной системы для абитуриентов._')
 
 option_city = st.selectbox(
     'Выбирите город целевого ВУЗа',
@@ -51,9 +52,12 @@ option_city = st.selectbox(
 option_univer = st.selectbox(
     'Выбирите ВУЗ',
     (ans[ans.region_name == option_city].name_short.tolist()))
-    
+
 fin = ans[ans.region_name == option_city]    
 option_cluster = fin[fin.name_short == option_univer].cluster.tolist()[0]
+    
+    
+
 outer_df = ans[ans.cluster == option_cluster]
 outer_df = outer_df.drop(outer_df[outer_df.name_short == option_univer].index)
 st.divider()
@@ -66,7 +70,6 @@ for i in range(0,outer_df.shape[0]):
 		st.markdown(outer_df.region_name.tolist()[i])
 		
 st.divider()	
-	
 agree = st.checkbox('Показать таблицу признаков для выбранного кластера')
 
 if agree:
@@ -76,7 +79,7 @@ if agree:
 image = st.checkbox('Показать матрицу расстояний')
 
 if image:
-	st.markdown('Выбранный ВУЗ относится к класетру **"' + option_cluster +'"** и выделен на карте **белым квадратом**:')
+	st.markdown('Выбранный ВУЗ относится к класетру **"' + option_cluster +'"** и выделен на матрице **белым квадратом**:')
 	plasma()
 	plt.figure(figsize=(8, 6))
 	pcolor(som.distance_map().T) 
@@ -99,4 +102,21 @@ if image:
 			 	
 		im = im + 1
 	st.pyplot(plt)
-
+	
+	st.header('Просмотр значений по номеу кластера')
+	st.caption('_Отображенная выше матрица и информация о выбранном вузе не будет изменена_')
+	option_choose_cluster = st.selectbox(
+    'Введите номер кластера',
+    (ans.cluster.unique()))
+    		
+		
+	option_cluster = option_choose_cluster
+	outer_df = ans[ans.cluster == option_choose_cluster]
+	outer_df = outer_df.drop(outer_df[outer_df.name_short == option_univer].index)
+		
+	for i in range(0,outer_df.shape[0]):
+		with st.container():
+			st.subheader(outer_df.name_short.tolist()[i])
+			st.markdown(outer_df.name.tolist()[i])
+			st.markdown(outer_df.region_name.tolist()[i])
+				
