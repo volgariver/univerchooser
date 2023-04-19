@@ -81,10 +81,26 @@ if image:
 	pcolor(som.distance_map().T) 
 	colorbar()
 	im = 0
+	markers = ['s']
 	for i, x in enumerate(train):
-		w = som.winner(x)
-		plt.text(w[0]+0.2,  w[1]+0.3,  str(ans.cluster.tolist()[i]),color='white', fontdict={'size': 10})
-		im = im + 1
+	    w = som.winner(x)
+
+	    if str(ans.cluster.tolist()[i]) == option_cluster:
+		 plot(w[0] + 0.5, 
+		 w[1] + 0.5,
+		 markers[0], 
+		 markersize = 25,
+		 markerfacecolor = 'white',
+		 markeredgecolor = 'white',
+		 markeredgewidth = 6)
+
+		 plt.text(w[0]+0.2,  w[1]+0.3,  str(ans.cluster.tolist()[i]), color='black',
+		     fontdict={ 'weight': 'bold', 'size': 10})
+	    else:
+		 plt.text(w[0]+0.2,  w[1]+0.3,  str(ans.cluster.tolist()[i]), color='white',
+		     fontdict={ 'size': 10})
+
+	    im = im + 1
 	st.pyplot(plt)
 
 
