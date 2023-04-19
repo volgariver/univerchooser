@@ -77,30 +77,16 @@ image = st.checkbox('Показать матрицу расстояний')
 
 if image:
 	plasma()
+	plasma()
 	plt.figure(figsize=(8, 6))
 	pcolor(som.distance_map().T) 
 	colorbar()
 	im = 0
-	markers = ['s']
 	for i, x in enumerate(train):
-	    w = som.winner(x)
+		w = som.winner(x)
+		plt.text(w[0]+0.2,  w[1]+0.3,  str(ans.cluster.tolist()[i]),color='white', fontdict={'size': 10})
+		im = im + 1
 
-	    if str(ans.cluster.tolist()[i]) == option_cluster:
-		 plot(w[0] + 0.5, 
-		 w[1] + 0.5,
-		 markers[0], 
-		 markersize = 25,
-		 markerfacecolor = 'white',
-		 markeredgecolor = 'white',
-		 markeredgewidth = 6)
-
-		 plt.text(w[0]+0.2,  w[1]+0.3,  str(ans.cluster.tolist()[i]), color='black',
-		     fontdict={ 'weight': 'bold', 'size': 10})
-	    else:
-		 plt.text(w[0]+0.2,  w[1]+0.3,  str(ans.cluster.tolist()[i]), color='white',
-		     fontdict={ 'size': 10})
-
-	    im = im + 1
 	st.pyplot(plt)
 
 
